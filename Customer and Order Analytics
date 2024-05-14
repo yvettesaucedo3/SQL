@@ -113,4 +113,14 @@ WHERE orderID<>'Order ID'
 AND length(orderID)=6;
 
 
+#Which product brought in the most revenue in January and how much revenue did it bring in total?
+
+SELECT Product, Round(Sum(quantity)*price)AS Revenue
+FROM BIT_DB.JanSales
+WHERE orderID<>'Order ID'
+AND length(orderID)=6
+GROUP BY Product
+ORDER BY Revenue DESC
+Limit 1;
+
 
