@@ -78,9 +78,10 @@ GROUP BY Product;
 
 SELECT DISTINCT location, COUNT(orderID)
 FROM BIT_DB.JanSales
-WHERE location LIKE '%New York%'
-GROUP BY orderID
-HAVING COUNT(orderID)>=3;
+WHERE location LIKE '%NY%'
+GROUP BY location
+HAVING COUNT(orderID)>2;
+
 
 
 
