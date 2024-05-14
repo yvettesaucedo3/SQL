@@ -1,0 +1,68 @@
+#In this SQL, I am querying a database with multiple tables in it to quantify statistics about customers and order data. 
+
+
+#How many orders were placed in January?
+
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE length(orderID)=6
+AND orderID<>'Order ID';
+
+
+#How many of those orders were for an iPhone?
+
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE Product = 'iPhone'
+AND length(orderID)=6
+AND orderID<>'Order ID';
+
+
+#Select the customers account numbers for all the orders that were placed in February. 
+
+SELECT DISTINCT cust.acctnum
+FROM BIT_DB.customers cust
+INNER JOIN BIT_DB.FebSales Feb
+ON cust.order_id=Feb.orderID
+WHERE Feb.orderID<>'Order ID'
+AND length(Feb.orderID)=6;
+
+#Which product was the cheapest one sold in January, and what was the price?
+
+SELECT DISTINCT Product, price 
+FROM BIT_DB.JanSales
+WHERE Price IN (SELECT MIN(price)FROM BIT_DB.JanSales);
+
+
+#What is the total Revenue for each prodcut sold in January? 
+
+SELECT Product, ROUND(SUM(quantity)*price,2) AS Revenue
+FROM BIT_DB.JanSales
+WHERE length(orderID)=6
+AND orderID<>'Order ID'
+GROUP BY Product;
+
+
+#Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total Revenue?
+
+SELECT product
+,Quantity
+,ROUND(SUM(quantity)*price,2) AS Revenue
+FROM BIT_DB.FebSales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+AND length(orderID)=6
+AND orderID<>'Order ID'
+GROUP BY Product;
+
+
+#How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+
+SELECT COUNT(cust.acctnum) AS CustomersOrderMoreThanTwoProducts
+,ROUND(AVG(quantity*price),2) AS AvgSpent
+FROM BIT_DB.customers cust
+LEFT JOIN BIT_DB.FebSales Feb
+ON cust.order_id=Feb.orderID
+WHERE Quantity>2
+AND length(orderID)=6
+AND orderID<>'Order ID';
+
