@@ -74,4 +74,13 @@ WHERE location LIKE '%Los Angeles%'
 GROUP BY Product;
 
 
+#Which location in New York received at least 3 orders in January, and how many orders did they each receive?
+
+SELECT DISTINCT location, COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE location LIKE '%New York%'
+GROUP BY orderID
+HAVING COUNT(orderID)>=3;
+
+
 
