@@ -93,5 +93,14 @@ AND length(orderID)=6
 GROUP BY Product;
 
 
+#What was the average amount spent per account in February?
+
+SELECT ROUND(AVG(price*Quantity),2) AS AvgSpent
+FROM BIT_DB.customers cust
+INNER JOIN BIT_DB.FebSales Feb
+ON cust.order_id=Feb.orderID
+WHERE orderID<>'Order ID'
+AND length(orderID)=6;
+
 
 
